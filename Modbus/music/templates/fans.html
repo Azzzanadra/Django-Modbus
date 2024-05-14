@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="{% url 'fans' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" name="reset">Reset</button>
+        <button type="submit" name="increase">Increase</button>
+        <button type="submit" name="modbusWrite">Set modbus</button>
+        <button type="submit" name="modbusRead">read modbus</button>
+        <button type="submit" name="restart">Restart faulty fan</button>
+    </form>
+    {% if all_fans %}
+    <ul>
+        {% for fan in all_fans %}
+            <!-- {% if fan.status == 'error' %}
+            <p>Fan: {{fan.id}} has an {{fan.status}} status.</p>
+            {% endif %} -->
+            {% if fan.id >= 1 and fan.id <= 30 %}
+                {% if fan.status != 7 %}
+                <p>Fan: {{fan.id}}, Fan set speed = {{fan.set_speed}}, fan actual speed = {{fan.actual_speed}}, fan status is {{fan.status}}.</p>
+                {% else %}
+                <p>Fan: {{fan.id}}, Fan set speed = {{fan.set_speed}}, fan actual speed = {{fan.actual_speed}}, fan status is faulty.</p>
+                {%endif%}
+            {%endif%}
+        {% endfor %}
+    </ul>
+    {% else %}
+    <h3>Nothing here</h3>
+    {% endif %}
+</body>
+</html>
